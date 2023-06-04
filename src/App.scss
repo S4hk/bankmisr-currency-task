@@ -1,0 +1,105 @@
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/utilities";
+@import "../node_modules/bootstrap/scss/mixins/";
+@import "../node_modules/bootstrap/scss/navbar";
+$primary: #871e35;
+$warning: #e8ba00;
+$primary-rgb: 135,30,53;
+$warning-rgb: 232,186,0;
+
+
+
+$font-sizes: (
+  1: 10px,
+  2: 12px,
+  3: 14px,
+  4: 16px,
+  5: 18px,
+  6: 20px,
+  7: 22px,
+  8: 24px,
+  9: 28px,
+);
+
+ul {
+  list-style: none;
+}
+$utilities: map-merge(
+  $utilities,
+  (
+    "font-size":
+      map-merge(
+        map-get($utilities, "font-size"),
+        (
+          values: $font-sizes,
+        )
+      ),
+    "rounded": (
+      property: border-radius,
+      class: rounded,
+      values: (
+        null: 10px,
+        0: 0,
+        "sm": 12px,
+        "md": 18px,
+        "lg": 30px,
+        "xl": 100px,
+        circle: 50%,
+        pill: $border-radius-pill,
+      ),
+    ),
+    "bg": (
+      property: background-color,
+      class: bg,
+      values: (
+        "gray": #0d3afe14,
+      ),
+    ),
+
+    "shadow": (
+      property: box-shadow,
+      class: shadow,
+      values: (
+        null: 0px 0px 2px rgba(0, 0, 0, 0.16),
+        sm: $box-shadow-sm,
+        md: 0px 3px 6px rgba(0, 0, 0, 0.1),
+        lg: (
+          rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+          rgba(60, 64, 67, 0.15) 0px 1px 3px 1px,
+        ),
+        none: none,
+      ),
+    ),
+  )
+);
+
+$theme-colors: (
+  "primary": $primary,
+  "warning": $warning,
+
+);
+$body-color: $dark;
+$btn-link-hover-color: $primary !important;
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+
+
+:root {
+  // --bs-body-font-family: "HelveticaNeueLT";
+  --bs-primary: #{$primary};
+  --bs-warning: #{$warning};
+  --bs-primary-rgb: #{$primary-rgb};
+  --bs-warning-rgb: #{$warning-rgb};
+  --bs-body-line-height: 1.63;
+  --fs-1: 12px;
+  --fs-2: 14px;
+  --fs-3: 16px;
+  --fs-4: 18px;
+  --fs-5: 20px;
+  --fs-6: 22px;
+  --fs-7: 24px;
+  --fs-8: 26px;
+}
