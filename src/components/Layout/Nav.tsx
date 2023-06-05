@@ -1,7 +1,7 @@
 import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
 import logo from "../../assets/images/bmp-logo.png";
+import { Link } from "react-router-dom";
 const NavBar: React.FC = () => {
   return (
     <Navbar sticky="top" bg="primary" variant="dark">
@@ -17,13 +17,11 @@ const NavBar: React.FC = () => {
         <Navbar.Toggle aria-controls="navbar-nav"/>
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link as={NavLink} to="/">
-              Home
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/eur/GBP">
+       
+            <Nav.Link as={Link} to="/?amount=1&from=EUR&to=GBP">
             EUR-GBP
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/eur/usd">
+            <Nav.Link as={Link} to="/?amount=1&from=EUR&to=USD">
             EUR-USD
             </Nav.Link>
           </Nav>

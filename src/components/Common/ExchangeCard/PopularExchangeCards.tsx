@@ -30,12 +30,11 @@ const PopularExchangeCards: React.FC<PopularExchangeCardsProps> = ({
 
   useEffect(() => {
     if (baseSymbol){
-    // getPopularRates(baseSymbol)
+    getPopularRates(baseSymbol)
   }
-  }, []);
+  }, [baseSymbol]);
   return (
     <>
-      {console.log("rates", Object.entries(rates))}
       <Container>
         <Row>
           {rates &&
@@ -59,10 +58,7 @@ const PopularExchangeCards: React.FC<PopularExchangeCardsProps> = ({
                       Rate: {rate} {symbol} x Amount: {amount} =
                     </div>
                     <div className="fw-bold ms-1 text-warning">
-                      {(amount * rate).toLocaleString(undefined, {
-                        style: "currency",
-                        currency: symbol,
-                      })}
+                      {(amount * rate).toFixed(2)}
                     </div>
                   </div>
                 </div>

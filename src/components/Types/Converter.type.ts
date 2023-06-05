@@ -1,16 +1,15 @@
 export interface converter {
-     amount: number;
+  amount: number;
   from: string;
   to: string;
-  }
+}
 
+export interface Currency {
+  symbol: string;
+  name: string;
+}
 
-  export interface Currency {
-   symbol: string;
-   name: string;
- }
-
- export interface FormControlElement  {
+export interface FormControlElement {
   value: string | number;
   name: string;
 }
