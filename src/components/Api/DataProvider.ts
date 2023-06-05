@@ -29,3 +29,26 @@ export const fetchRates = async (baseCurrency: string, targetCurrency: string) =
     throw error;
   }
 };
+
+
+export const fetchPopularRates = (base: string) => {
+    const symbols = ['USD', 'EUR', 'JPY', 'GBP', 'AUD', 'CAD', 'CHF', 'CNY', 'NZD'];
+    
+    return new Promise((resolve, reject) => {
+      instance.get('/latest', {
+        params: {
+          base,
+          symbols: symbols.join(','),
+        },
+      })
+        .then(response => {
+          const rates = response.data.rates;
+          resolve(rates);
+        })
+        .catch(error => {
+          console.error('Error fetching rates:', error);
+          reject(error);
+        });
+    });
+  };
+  
