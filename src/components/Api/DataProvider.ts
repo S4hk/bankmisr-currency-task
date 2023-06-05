@@ -51,4 +51,7 @@ export const fetchPopularRates = (base: string) => {
         });
     });
   };
+
   
+
+
