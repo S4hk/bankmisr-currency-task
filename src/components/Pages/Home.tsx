@@ -10,6 +10,7 @@ import {
 } from "../Types/Converter.type";
 import PopularExchangeCards from "../Common/ExchangeCard/PopularExchangeCards";
 import queryString from "query-string";
+import HistoricalChart from "../Common/HistoricalChart/HistoricalChart";
 
 const BankMisrCurrencyExchanger: React.FC = () => {
   const [conversionData, setConversionData] = useState<converter>({
@@ -215,6 +216,8 @@ const BankMisrCurrencyExchanger: React.FC = () => {
         from: String(parsed.from),
         to: String(parsed.to),
       };
+
+  
       setConversionData(parsedQuery);
     }
   }, [location.search]);
@@ -227,11 +230,7 @@ const BankMisrCurrencyExchanger: React.FC = () => {
     }));
   };
 
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement> & { target: HTMLFormElement }
-  ) => {
-    event.preventDefault();
-
+  const getRates =async ()=>{
     try {
       const rate = await fetchRates(conversionData?.from, conversionData?.to);
 
@@ -239,12 +238,31 @@ const BankMisrCurrencyExchanger: React.FC = () => {
     } catch (error) {
       console.error("Error fetching rate:", error);
     }
+  }
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement> & { target: HTMLFormElement }
+  ) => {
+    event.preventDefault();
+    setResult(0)
+    getRates()
+ 
   };
   const isConvertDisabled = !conversionData.from || !conversionData.to;
+
+  const handleSwap = () => {
+    setConversionData({
+      amount: conversionData.amount,
+      from: conversionData.to,
+      to: conversionData.from,
+    });
+    setResult(0)
+    getRates();
+  };
   return (
     <>
       <Container>
         <h1 className="text-center mb-4 mt-5">Bank Misr Currency Exchanger</h1>
+        {!!location.search && 
         <div className="d-flex justify-content-between">
           <h3>
             {
@@ -258,6 +276,7 @@ const BankMisrCurrencyExchanger: React.FC = () => {
             Back to home
           </Link>
         </div>
+        }
 
         <Form
           onSubmit={handleSubmit}
@@ -317,13 +336,15 @@ const BankMisrCurrencyExchanger: React.FC = () => {
                     ))}
                   </select>
                 </Form.Group>
-                <img
-                  className="mx-2"
-                  src={exchangeIcon}
-                  width={30}
-                  height={30}
-                  alt="exchange Icon"
-                />
+                <Button variant="transparent" onClick={handleSwap}>
+                  <img
+                    className="mx-2"
+                    src={exchangeIcon}
+                    width={30}
+                    height={30}
+                    alt="exchange Icon"
+                  />
+                </Button>
                 <Form.Group
                   className="d-flex flex-grow-1"
                   controlId="toCurrency"
@@ -390,6 +411,7 @@ const BankMisrCurrencyExchanger: React.FC = () => {
               amount={conversionData?.amount}
             />
           )}
+      <HistoricalChart />
     </>
   );
 };
