@@ -9,6 +9,7 @@ import {
 } from "./components/Api/DataProvider";
 import { Rates } from "./components/Types/Rates.type";
 import PopularExchangeCards from "./components/Common/ExchangeCard/PopularExchangeCards";
+import BankMisrCurrencyExchanger from "./components/Pages/Home";
 
 function App() {
   return (
@@ -17,8 +18,10 @@ function App() {
      {console.log("fetchRates",fetchRates("USD","EUR"))} */}
       <Router>
         <NavBar />
+        <Routes>
+          <Route path="/" element={<BankMisrCurrencyExchanger/>} />
+        </Routes>
       <PopularExchangeCards baseSymbol={"USD"} amount={5} />
-        <Routes>{/* <Route path="/" element={} /> */}</Routes>
       </Router>
     </>
   );
