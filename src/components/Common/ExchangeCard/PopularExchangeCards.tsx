@@ -8,17 +8,7 @@ const PopularExchangeCards: React.FC<PopularExchangeCardsProps> = ({
   baseSymbol,
   amount,
 }) => {
-  const [rates, setRates] = useState<Rates>({
-    USD: 0.011473,
-    EUR: 0.010732,
-    JPY: 1.610061,
-    GBP: 0.009265,
-    AUD: 0.017425,
-    CAD: 0.01543,
-    CHF: 0.010452,
-    CNY: 0.081642,
-    HKD: 0.089921,
-  }); //TODO remove this values 
+  const [rates, setRates] = useState<Rates>(); 
   const getPopularRates = async (base: string) => {
     try {
       const rates: Rates = (await fetchPopularRates(base)) as Rates;

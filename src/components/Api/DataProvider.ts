@@ -79,17 +79,43 @@ export const fetchHistoricalData = async (
         symbols: selectedCurrency,
       },
     });
+    const rates = response.data.rates; 
+    
+    // giving me the final day of the month
+    const transformedData = Object.entries(rates).reduce((result: { [key: string]: any }, [date, rate]) => {
+        const [year, month, day] = new Date(date).toISOString().split('T')[0].split('-');
+        const key = `${year}-${month}`;
+        
+        if (!result[key] || day > result[key].split('-')[2]) {
+          result[key] = date;
+        }
+        
+        return result;
+      }, {});
+      
+      const new_obj: { [key: string]: number } = {};
+    // replace the day of the month with it's rate
+      for (const key in transformedData) {
+          if (transformedData.hasOwnProperty(key)) {
+              const value = transformedData[key];
+              if (value in rates) {
+                  new_obj[key] = rates[value]["USD"] ;
+              }
+          }
+      }
 
-    const rates = response.data.rates;
-    const labels = Object.keys(rates);
-    const data = labels.map((date) => rates[date]);
+
+    const labels = Object.keys(new_obj);
+    const data = Object.values(new_obj);
+
+
+
 
     const chartData = {
       labels: labels,
       datasets: [
         {
           label: selectedCurrency.toUpperCase(),
-          // data: Array(7).fill(0).map((_, i) => Math.floor(Math.random() * 100)),
           data:data,
           borderColor: 'rgb(135,30,53)',
           backgroundColor: 'rgba(135,30,53, 0.5)',
