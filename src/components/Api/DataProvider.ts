@@ -99,7 +99,7 @@ export const fetchHistoricalData = async (
           if (transformedData.hasOwnProperty(key)) {
               const value = transformedData[key];
               if (value in rates) {
-                  new_obj[key] = rates[value]["USD"] ;
+                  new_obj[key] = rates[value][selectedCurrency] ;
               }
           }
       }

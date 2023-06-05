@@ -13,3 +13,8 @@ export interface FormControlElement {
   value: string | number;
   name: string;
 }
+
+export interface HistoricalChartProps {
+  base: string;
+  symbols: string;
+}

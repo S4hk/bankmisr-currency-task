@@ -6,20 +6,32 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  Title,
+  Tooltip,
+  Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { Container } from "react-bootstrap";
+import { HistoricalChartProps } from "../../Types/Converter.type";
 
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
+ChartJS.register( CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend);
 
   
-const HistoricalChart: React.FC = () => {
+const HistoricalChart: React.FC<HistoricalChartProps> = ({
+    base,symbols
+}) => {
   const [chartData, setChartData] = useState<any>();
 
   const fetchHistoricalChartData = async () => {
     try {
-      const historicalData = await fetchHistoricalData("EUR", "USD");
+      const historicalData = await fetchHistoricalData(base,symbols);
 
       setChartData(historicalData);
     } catch (error) {
@@ -28,7 +40,7 @@ const HistoricalChart: React.FC = () => {
   };
   useEffect(() => {
     fetchHistoricalChartData();
-  }, []);
+  }, [base,symbols]);
 
   return (
     <>
@@ -45,7 +57,7 @@ const HistoricalChart: React.FC = () => {
                 },
                 title: {
                   display: true,
-                  text: "Chart.js Line Chart",
+                  text: `${base} to ${symbols} last year monthly Chart`,
                 },
               },
             }}

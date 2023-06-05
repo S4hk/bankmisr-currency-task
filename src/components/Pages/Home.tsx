@@ -232,7 +232,7 @@ const BankMisrCurrencyExchanger: React.FC = () => {
         </Form>
       </Container>
       {!!location.search
-        ? "dfsdfsd"
+        ? <HistoricalChart symbols={conversionData?.to} base={conversionData?.from}/>
         : conversionData?.from &&
           result && (
             <PopularExchangeCards
@@ -240,7 +240,7 @@ const BankMisrCurrencyExchanger: React.FC = () => {
               amount={conversionData?.amount}
             />
           )}
-      <HistoricalChart />
+      
     </>
   );
 };
