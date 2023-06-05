@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import logo from "../../assets/images/bmp-logo.png";
 const NavBar: React.FC = () => {
   return (
-    <Navbar sticky="top" bg="light" variant="light">
+    <Navbar sticky="top" bg="primary" variant="dark">
       <Container>
         <Navbar.Brand>
           <img
