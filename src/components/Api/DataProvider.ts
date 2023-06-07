@@ -1,11 +1,16 @@
 import instance from "./interceptor";
 import { format , subYears } from "date-fns";
 
+
+
+/**
+ * Fetches the symbols.
+ * return The symbols list for athe converter dropdown .
+ */
 export const fetchSymbols = async () => {
   try {
     const response = await instance.get("/symbols");
     const symbols = response.data.symbols;
-    // console.log(symbols)
     return symbols;
   } catch (error) {
     console.error("Error fetching symbols:", error);
@@ -13,6 +18,11 @@ export const fetchSymbols = async () => {
   }
 };
 
+
+/**
+ * Fetches the  Rates.
+ * return The the rate of the  two currencies passed to it.
+ */
 export const fetchRates = async (
   baseCurrency: string,
   targetCurrency: string
@@ -31,8 +41,13 @@ export const fetchRates = async (
     throw error;
   }
 };
+/**
+ * Fetches the Popular Rates.
+ * return The the rate of the  9  symbols for the rates grid .
+ */
 
-export const fetchPopularRates = (base: string) => {
+
+export const fetchPopularRates = async (base: string) => {
   const symbols = [
     "USD",
     "EUR",
@@ -45,24 +60,27 @@ export const fetchPopularRates = (base: string) => {
     "NZD",
   ];
 
-  return new Promise((resolve, reject) => {
-    instance
-      .get("/latest", {
-        params: {
-          base,
-          symbols: symbols.join(","),
-        },
-      })
-      .then((response) => {
-        const rates = response.data.rates;
-        resolve(rates);
-      })
-      .catch((error) => {
-        console.error("Error fetching rates:", error);
-        reject(error);
-      });
-  });
+  try {
+    const response = await instance.get("/latest", {
+      params: {
+        base,
+        symbols: symbols.join(","),
+      },
+    });
+    const rates = response.data.rates;
+    return rates;
+  } catch (error) {
+    console.error("Error fetching rates:", error);
+    throw error;
+  }
 };
+
+
+/**
+ * Fetches the  Historical Data.
+ * 
+ * 
+ */
 export const fetchHistoricalData = async (
   baseCurrency: string,
   selectedCurrency: string
@@ -79,11 +97,18 @@ export const fetchHistoricalData = async (
         symbols: selectedCurrency,
       },
     });
+
+
+
+    // return The the rate of the  two currancies for last 12 monthes 
     const rates = response.data.rates; 
     
     
-    // giving me the final day of the month
-    const transformedData = Object.entries(rates).reduce((result: { [key: string]: string;}, [date, rate]) => {
+  /**    reduce the response to return the lasst day 
+    of every month return object of {month:last day}*/
+
+
+    const monthsLastDay = Object.entries(rates).reduce((result: { [key: string]: string;}, [date, rate]) => {
         const [year, month, day] = new Date(date).toISOString().split('T')[0].split('-');
         const key = `${year}-${month}`;
         
@@ -94,11 +119,15 @@ export const fetchHistoricalData = async (
         return result;
       }, {});
       
+      // new object to push transfromed data in from the loop
       const new_obj: { [key: string]: number } = {};
-    // replace the day of the month with it's rate
-      for (const key in transformedData) {
-          if (transformedData.hasOwnProperty(key)) {
-              const value = transformedData[key];
+
+      /** looping throught the months last days to change the day 
+       with it's rate  then push to the new object  {month?:lastddayrate}*/
+   
+      for (const key in monthsLastDay) {
+          if (monthsLastDay.hasOwnProperty(key)) {
+              const value = monthsLastDay[key];
               if (value in rates) {
                   new_obj[key] = rates[value][selectedCurrency] ;
               }
@@ -106,12 +135,9 @@ export const fetchHistoricalData = async (
       }
 
 
+// make the object of Chartjs Line chart
     const labels = Object.keys(new_obj);
     const data = Object.values(new_obj);
-
-
-
-
     const chartData = {
       labels: labels,
       datasets: [
