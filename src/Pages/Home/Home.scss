@@ -1,0 +1,13 @@
+.converter {
+    form {
+        border:solid 2px var(--bs-primary);
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+    }
+
+
+    .flex-between {
+        display: flex;
+        justify-content: space-between;
+    }
+}

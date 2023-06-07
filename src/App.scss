@@ -103,3 +103,9 @@ $btn-link-hover-color: $primary !important;
   --fs-7: 24px;
   --fs-8: 26px;
 }
+.rate-highlight{
+  display: flex;
+  justify-content: center;
+  background-color: rgba(var(--bs-light-rgb), 1) ;
+  border-radius: 10px;
+}

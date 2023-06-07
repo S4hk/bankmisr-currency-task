@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { PopularExchangeCardsProps, Rates } from "../Types/Rates.type";
 import { fetchPopularRates } from "../Api/DataProvider";
 import exchangeIcon from "../../assets/images/exchange-13.svg";
-
+import "./popularExchangeCard.scss"
 const PopularExchangeCards: React.FC<PopularExchangeCardsProps> = ({
   baseSymbol,
   amount,
@@ -31,7 +31,7 @@ const PopularExchangeCards: React.FC<PopularExchangeCardsProps> = ({
           {rates ?
             Object.entries(rates).map(([symbol, rate]) => (
               <Col key={symbol} md={4}>
-                <div className="shadow-md border border-2 border-primary rounded p-3 my-3 text-center">
+                <div className="popular-card p-3 my-3 ">
                   <h4 className="text-primary">{symbol}</h4>
                   <div>
                     1 {baseSymbol}
@@ -44,7 +44,7 @@ const PopularExchangeCards: React.FC<PopularExchangeCardsProps> = ({
                     />
                     {rate} {symbol}
                   </div>
-                  <div className="bg-light p-3 d-flex justify-content-center">
+                  <div className="rate-highlight p-3">
                     <div>
                       Rate: {rate} {symbol} x Amount: {amount} =
                     </div>

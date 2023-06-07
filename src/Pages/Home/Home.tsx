@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import { fetchRates, fetchSymbols } from "../components/Api/DataProvider";
-import exchangeIcon from "../assets/images/exchange-13.svg";
+import { fetchRates, fetchSymbols } from "../../components/Api/DataProvider";
+import exchangeIcon from "../../assets/images/exchange-13.svg";
+import "./Home.scss"
 import { Link, useLocation } from "react-router-dom";
 import {
   Currency,
   FormControlElement,
   converter,
-} from "../components/Types/Converter.type";
-import PopularExchangeCards from "../components/ExchangeCard/PopularExchangeCards";
-import HistoricalChart from "../components/HistoricalChart/HistoricalChart";
-import MoreDetailsBtn from "../components/MoreDetailsBtn";
-import SymbolSelect from "../components/SymbolSelect";
+} from "../../components/Types/Converter.type";
+import PopularExchangeCards from "../../components/ExchangeCard/PopularExchangeCards";
+import HistoricalChart from "../../components/HistoricalChart/HistoricalChart";
+import MoreDetailsBtn from "../../components/MoreDetailsBtn";
+import SymbolSelect from "../../components/SymbolSelect";
 
 const BankMisrCurrencyExchanger: React.FC = () => {
   const location = useLocation();
@@ -99,10 +100,10 @@ const BankMisrCurrencyExchanger: React.FC = () => {
   return (
     <>
     
-      <Container>
+      <Container className="converter">
         <h1 className="text-center mb-4 mt-5">Bank Misr Currency Exchanger</h1>
         {!!location.search && (
-          <div className="d-flex justify-content-between">
+          <div className="flex-between ">
             <h3>
               {
                 currencies?.find(
@@ -119,10 +120,10 @@ const BankMisrCurrencyExchanger: React.FC = () => {
 
         <Form
           onSubmit={handleSubmit}
-          className="shadow-md border border-2  border-primary rounded p-5 my-3"
+          className="p-5 my-3"
         >
           <Row>
-            <Col sm={6} className="d-flex flex-column justify-content-between">
+            <Col sm={6} className=" flex-column flex-between ">
               <Form.Group as={Row} className="mb-3" controlId="amount">
                 <Form.Label column sm={2}>
                   Amount
@@ -191,7 +192,7 @@ const BankMisrCurrencyExchanger: React.FC = () => {
               <Row>
                 <Col className="fs-9">
                   {result ? (
-                    <div className="bg-light p-2 rounded d-inline-block p-2 w-100 text-center">
+                    <div className="rate-highlight p-2   w-100 text-center">
                       {(result * conversionData?.amount).toFixed(2)}
                       {conversionData?.to}
                     </div>
