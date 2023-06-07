@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { fetchRates, fetchSymbols } from "../components/Api/DataProvider";
 import exchangeIcon from "../assets/images/exchange-13.svg";
@@ -9,10 +9,12 @@ import {
   converter,
 } from "../components/Types/Converter.type";
 import PopularExchangeCards from "../components/ExchangeCard/PopularExchangeCards";
-import queryString from "query-string";
 import HistoricalChart from "../components/HistoricalChart/HistoricalChart";
+import MoreDetailsBtn from "../components/MoreDetailsBtn";
+import SymbolSelect from "../components/SymbolSelect";
 
 const BankMisrCurrencyExchanger: React.FC = () => {
+  const location = useLocation();
   const [conversionData, setConversionData] = useState<converter>({
     amount: 0,
     from: "",
@@ -20,6 +22,11 @@ const BankMisrCurrencyExchanger: React.FC = () => {
   });
   const [result, setResult] = useState(0);
   const [currencies, setCurrencies] = useState<Currency[]>([]);
+  const isConvertDisabled = !conversionData.from || !conversionData.to;
+
+
+
+  // fetching  the currencies symbols
 
   const fetchCurrencies = async () => {
     try {
@@ -34,22 +41,12 @@ const BankMisrCurrencyExchanger: React.FC = () => {
       console.error("Error fetching currencies:", error);
     }
   };
-
-  const location = useLocation();
-  const parsed = queryString.parse(location.search);
   useEffect(() => {
     fetchCurrencies();
-    if (location.search) {
-      const parsedQuery = {
-        amount: Number(parsed.amount),
-        from: String(parsed.from),
-        to: String(parsed.to),
-      };
+  }, []);
 
-      setConversionData(parsedQuery);
-    }
-  }, [location.search]);
 
+  // collecting data from input and add it to state
   const handleChange = (event: React.ChangeEvent<FormControlElement>) => {
     const { name, value } = event.target;
     setConversionData((prevState) => ({
@@ -58,6 +55,7 @@ const BankMisrCurrencyExchanger: React.FC = () => {
     }));
   };
 
+  // calling the thirdparty api to get the currncy rate
   const getRates = async () => {
     try {
       const rate = await fetchRates(conversionData?.from, conversionData?.to);
@@ -67,6 +65,8 @@ const BankMisrCurrencyExchanger: React.FC = () => {
       console.error("Error fetching rate:", error);
     }
   };
+
+
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement> & { target: HTMLFormElement }
   ) => {
@@ -74,8 +74,9 @@ const BankMisrCurrencyExchanger: React.FC = () => {
     setResult(0);
     getRates();
   };
-  const isConvertDisabled = !conversionData.from || !conversionData.to;
 
+
+  // swap function that change the symbols and re reuqest the rates
   const handleSwap = () => {
     setConversionData({
       amount: conversionData.amount,
@@ -85,8 +86,19 @@ const BankMisrCurrencyExchanger: React.FC = () => {
     setResult(0);
     getRates();
   };
+
+
+  // The currencyOptions variable is created using the useMemo hook to optimize rendering performance.
+  const currencyOptions = useMemo(() => {
+    return currencies.map((currency) => (
+      <option key={currency.symbol} value={currency.symbol}>
+        {currency.symbol} - {currency.name}
+      </option>
+    ))
+  }, [currencies])
   return (
     <>
+    
       <Container>
         <h1 className="text-center mb-4 mt-5">Bank Misr Currency Exchanger</h1>
         {!!location.search && (
@@ -143,26 +155,13 @@ const BankMisrCurrencyExchanger: React.FC = () => {
 
             <Col sm={6}>
               <div className="d-flex mb-4 align-items-center">
-                <Form.Group
-                  className="d-flex flex-grow-1"
-                  controlId="fromCurrency"
-                >
-                  <Form.Label className="me-2">From</Form.Label>
-                  <select
-                    className="form-control"
-                    value={conversionData?.from}
-                    onChange={handleChange}
-                    name="from"
-                    disabled={!!location.search}
-                  >
-                    <option value="">Select Currency</option>
-                    {currencies.map((currency) => (
-                      <option key={currency.symbol} value={currency.symbol}>
-                        {currency.symbol} - {currency.name}
-                      </option>
-                    ))}
-                  </select>
-                </Form.Group>
+                <SymbolSelect
+                  label="From"
+                  value={conversionData.from}
+                  onChange={handleChange}
+                  name="from"
+                  currencyOptions={currencyOptions}
+                />
                 <Button variant="transparent" onClick={handleSwap}>
                   <img
                     className="mx-2"
@@ -172,25 +171,13 @@ const BankMisrCurrencyExchanger: React.FC = () => {
                     alt="exchange Icon"
                   />
                 </Button>
-                <Form.Group
-                  className="d-flex flex-grow-1"
-                  controlId="toCurrency"
-                >
-                  <Form.Label className="me-2">To</Form.Label>
-                  <select
-                    className="form-control"
-                    value={conversionData?.to}
-                    onChange={handleChange}
-                    name="to"
-                  >
-                    <option value="">Select Currency</option>
-                    {currencies.map((currency) => (
-                      <option key={currency.symbol} value={currency.symbol}>
-                        {currency.symbol} - {currency.name}
-                      </option>
-                    ))}
-                  </select>
-                </Form.Group>
+                <SymbolSelect
+                  label="To"
+                  value={conversionData.to}
+                  onChange={handleChange}
+                  name="to"
+                  currencyOptions={currencyOptions}
+                />
               </div>
               <Button
                 type="submit"
@@ -213,15 +200,10 @@ const BankMisrCurrencyExchanger: React.FC = () => {
 
                 {!!location.search || (
                   <Col>
-                    <Link
-                      to={`/?${queryString.stringify(conversionData)}`}
-                      className={
-                        "btn btn-primary w-100 " +
-                        (isConvertDisabled ? "disabled" : "")
-                      }
-                    >
-                      More Details
-                    </Link>
+                    <MoreDetailsBtn
+                      conversionData={conversionData}
+                      isConvertDisabled={isConvertDisabled}
+                    />
                   </Col>
                 )}
               </Row>
@@ -238,6 +220,7 @@ const BankMisrCurrencyExchanger: React.FC = () => {
         conversionData?.from &&
         !!result && (
           <PopularExchangeCards
+          result={result}
             baseSymbol={conversionData?.from}
             amount={conversionData?.amount}
           />

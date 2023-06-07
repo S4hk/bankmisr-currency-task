@@ -7,6 +7,7 @@ import exchangeIcon from "../../assets/images/exchange-13.svg";
 const PopularExchangeCards: React.FC<PopularExchangeCardsProps> = ({
   baseSymbol,
   amount,
+  result
 }) => {
   const [rates, setRates] = useState<Rates>(); 
   const getPopularRates = async (base: string) => {
@@ -22,7 +23,7 @@ const PopularExchangeCards: React.FC<PopularExchangeCardsProps> = ({
     if (baseSymbol){
     getPopularRates(baseSymbol)
   }
-  }, [baseSymbol]);
+  }, [result]);
   return (
     <>
       <Container>

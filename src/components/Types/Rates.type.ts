@@ -4,4 +4,5 @@ export interface Rates {
   export interface PopularExchangeCardsProps {
     baseSymbol: string;
     amount: number;
+    result:number;
   }
