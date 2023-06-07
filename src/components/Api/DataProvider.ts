@@ -81,8 +81,9 @@ export const fetchHistoricalData = async (
     });
     const rates = response.data.rates; 
     
+    
     // giving me the final day of the month
-    const transformedData = Object.entries(rates).reduce((result: { [key: string]: any }, [date, rate]) => {
+    const transformedData = Object.entries(rates).reduce((result: { [key: string]: string;}, [date, rate]) => {
         const [year, month, day] = new Date(date).toISOString().split('T')[0].split('-');
         const key = `${year}-${month}`;
         

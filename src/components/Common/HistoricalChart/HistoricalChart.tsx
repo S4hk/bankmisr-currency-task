@@ -12,7 +12,8 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { Container } from "react-bootstrap";
-import { HistoricalChartProps } from "../../Types/Converter.type";
+import { HistoricalChartProps } from "../../Types/Chart.type";
+import { chart } from "../../Types/Chart.type";
 
 
 ChartJS.register( CategoryScale,
@@ -27,7 +28,7 @@ ChartJS.register( CategoryScale,
 const HistoricalChart: React.FC<HistoricalChartProps> = ({
     base,symbols
 }) => {
-  const [chartData, setChartData] = useState<any>();
+  const [chartData, setChartData] = useState<chart>();
 
   const fetchHistoricalChartData = async () => {
     try {
