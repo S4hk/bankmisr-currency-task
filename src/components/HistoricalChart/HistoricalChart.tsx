@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchHistoricalData } from "../../Api/DataProvider";
+import { fetchHistoricalData } from "../Api/DataProvider";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,8 +12,8 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { Container } from "react-bootstrap";
-import { HistoricalChartProps } from "../../Types/Chart.type";
-import { chart } from "../../Types/Chart.type";
+import { HistoricalChartProps } from "../Types/Chart.type";
+import { chart } from "../Types/Chart.type";
 
 
 ChartJS.register( CategoryScale,

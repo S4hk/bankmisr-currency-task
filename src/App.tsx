@@ -2,7 +2,7 @@ import "./App.scss";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import NavBar from "./components/Layout/Nav";
 
-import BankMisrCurrencyExchanger from "./components/Pages/Home";
+import BankMisrCurrencyExchanger from "./Pages/Home";
 
 function App() {
   return (

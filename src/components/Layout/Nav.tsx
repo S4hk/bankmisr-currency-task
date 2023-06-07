@@ -6,14 +6,14 @@ const NavBar: React.FC = () => {
   return (
     <Navbar sticky="top" bg="primary" variant="dark">
       <Container>
-        <Navbar.Brand>
+        <Link to="/">
           <img
             src={logo}
             height="70"
             className="d-inline-block align-top"
             alt="Logo"
           />
-        </Navbar.Brand>
+        </Link>
         <Navbar.Toggle aria-controls="navbar-nav"/>
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto">

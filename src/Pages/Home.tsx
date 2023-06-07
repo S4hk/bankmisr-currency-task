@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import { fetchRates, fetchSymbols } from "../Api/DataProvider";
-import exchangeIcon from "../../assets/images/exchange-13.svg";
+import { fetchRates, fetchSymbols } from "../components/Api/DataProvider";
+import exchangeIcon from "../assets/images/exchange-13.svg";
 import { Link, useLocation } from "react-router-dom";
 import {
   Currency,
   FormControlElement,
   converter,
-} from "../Types/Converter.type";
-import PopularExchangeCards from "../Common/ExchangeCard/PopularExchangeCards";
+} from "../components/Types/Converter.type";
+import PopularExchangeCards from "../components/ExchangeCard/PopularExchangeCards";
 import queryString from "query-string";
-import HistoricalChart from "../Common/HistoricalChart/HistoricalChart";
+import HistoricalChart from "../components/HistoricalChart/HistoricalChart";
 
 const BankMisrCurrencyExchanger: React.FC = () => {
   const [conversionData, setConversionData] = useState<converter>({
@@ -24,7 +24,7 @@ const BankMisrCurrencyExchanger: React.FC = () => {
   const fetchCurrencies = async () => {
     try {
       const symbols = await fetchSymbols();
- 
+
       const currencies = Object.entries(symbols).map(([symbol, name]) => ({
         symbol,
         name,
@@ -46,7 +46,6 @@ const BankMisrCurrencyExchanger: React.FC = () => {
         to: String(parsed.to),
       };
 
-  
       setConversionData(parsedQuery);
     }
   }, [location.search]);
@@ -59,7 +58,7 @@ const BankMisrCurrencyExchanger: React.FC = () => {
     }));
   };
 
-  const getRates =async ()=>{
+  const getRates = async () => {
     try {
       const rate = await fetchRates(conversionData?.from, conversionData?.to);
 
@@ -67,14 +66,13 @@ const BankMisrCurrencyExchanger: React.FC = () => {
     } catch (error) {
       console.error("Error fetching rate:", error);
     }
-  }
+  };
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement> & { target: HTMLFormElement }
   ) => {
     event.preventDefault();
-    setResult(0)
-    getRates()
- 
+    setResult(0);
+    getRates();
   };
   const isConvertDisabled = !conversionData.from || !conversionData.to;
 
@@ -84,28 +82,28 @@ const BankMisrCurrencyExchanger: React.FC = () => {
       from: conversionData.to,
       to: conversionData.from,
     });
-    setResult(0)
+    setResult(0);
     getRates();
   };
   return (
     <>
       <Container>
         <h1 className="text-center mb-4 mt-5">Bank Misr Currency Exchanger</h1>
-        {!!location.search && 
-        <div className="d-flex justify-content-between">
-          <h3>
-            {
-              currencies?.find(
-                (currency) => currency?.symbol === conversionData?.from
-              )?.name
-            }
-          </h3>
+        {!!location.search && (
+          <div className="d-flex justify-content-between">
+            <h3>
+              {
+                currencies?.find(
+                  (currency) => currency?.symbol === conversionData?.from
+                )?.name
+              }
+            </h3>
 
-          <Link to="/" className="btn btn-primary">
-            Back to home
-          </Link>
-        </div>
-        }
+            <Link to="/" className="btn btn-primary">
+              Back to home
+            </Link>
+          </div>
+        )}
 
         <Form
           onSubmit={handleSubmit}
@@ -231,16 +229,20 @@ const BankMisrCurrencyExchanger: React.FC = () => {
           </Row>
         </Form>
       </Container>
-      {!!location.search
-        ? <HistoricalChart symbols={conversionData?.to} base={conversionData?.from}/>
-        : conversionData?.from &&
-          result && (
-            <PopularExchangeCards
-              baseSymbol={conversionData?.from}
-              amount={conversionData?.amount}
-            />
-          )}
-      
+      {!!location.search ? (
+        <HistoricalChart
+          symbols={conversionData?.to}
+          base={conversionData?.from}
+        />
+      ) : (
+        conversionData?.from &&
+        !!result && (
+          <PopularExchangeCards
+            baseSymbol={conversionData?.from}
+            amount={conversionData?.amount}
+          />
+        )
+      )}
     </>
   );
 };

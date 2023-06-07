@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { PopularExchangeCardsProps, Rates } from "../../Types/Rates.type";
-import { fetchPopularRates } from "../../Api/DataProvider";
-import exchangeIcon from "../../../assets/images/exchange-13.svg";
+import { PopularExchangeCardsProps, Rates } from "../Types/Rates.type";
+import { fetchPopularRates } from "../Api/DataProvider";
+import exchangeIcon from "../../assets/images/exchange-13.svg";
 
 const PopularExchangeCards: React.FC<PopularExchangeCardsProps> = ({
   baseSymbol,
@@ -27,7 +27,7 @@ const PopularExchangeCards: React.FC<PopularExchangeCardsProps> = ({
     <>
       <Container>
         <Row>
-          {rates &&
+          {rates ?
             Object.entries(rates).map(([symbol, rate]) => (
               <Col key={symbol} md={4}>
                 <div className="shadow-md border border-2 border-primary rounded p-3 my-3 text-center">
@@ -53,7 +53,7 @@ const PopularExchangeCards: React.FC<PopularExchangeCardsProps> = ({
                   </div>
                 </div>
               </Col>
-            ))}
+            )) : <div>Loading...</div>}
         </Row>
       </Container>
     </>
